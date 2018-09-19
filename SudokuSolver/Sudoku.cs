@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace SudokuSolver
 {
@@ -22,13 +24,35 @@ namespace SudokuSolver
 
         private int GetCellValue(int row, int column)
         {
-            throw new NotImplementedException();
+            return cells[row, column];
         }
 
         private void SetCellValue(int row, int column, int value)
         {
-            cells[row, column] = value; 
+            cells[row, column] = value;
         }
+
+        public void PrintBoard()
+        {
+            for (int row = 0; row < 9; row++)
+            {
+                for (int col = 0; col < 9; col++)
+                {
+                    int cellValue = GetCellValue(row, col);
+
+                    if (cellValue != 0)                                             
+                    {                                                               
+                        Console.Write(cellValue + " ");                             
+                    }                                                               
+                    else                                                            
+                    {                                                               
+                        Console.Write("_ ");                                        
+                    }                                                               
+                }
+                Console.WriteLine();
+            }
+        }
+
 
         private bool CellIsEmpty(int row, int column)
         {
@@ -41,30 +65,61 @@ namespace SudokuSolver
         private int[] GetNumbersInRow(int row)
         {
             // Hämta siffrorna i en rad
-
-            throw new NotImplementedException();
+            // TODO: hämta siffror från rad
+            return new[] { 0, 0, 8, 1, 0, 2, 9, 0, 0 };
+            
         }
 
         private int[] GetNumbersInColumn(int column)
         {
-            // Hämta siffrorna i en rad
 
-            throw new NotImplementedException();
+            // TODO: Hämta siffrorna i en rad
+            return new[] { 2, 0, 0, 0, 0, 0, 0, 0, 1 };
+
+           
         }
 
         private int[] GetNumbersInBlock(int row, int column)
         {
             // Beräkna vilket block
             // Hämta siffrorna i blocket rad för rad
+            int[] result = new int[9];
 
-            throw new NotImplementedException();
+            int topLeftRow = (row < 3) ? 0 : ((row < 6) ? 3 : 6);
+            int topLeftColumn = (column / 3) * 3;
+            int position = 0;
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    int cellValue = GetCellValue(topLeftRow + i, topLeftColumn + j);
+                    result[position] = cellValue;
+                    position++;
+                }
+            }
+            return result;        
         }
 
-        private int[] FindPossibleNumbers()
+        public int[] FindPossibleNumbers(int row, int column)
         {
             // Hitta möjliga tal för cell utifrån rad, kolumn och block
+            List<int> result = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            int[] numbersInRow = GetNumbersInRow(row);
+            int[] numbersInColumn = GetNumbersInColumn(column);
 
-            throw new NotImplementedException();
+            foreach(var number in numbersInRow)
+            {
+                if (result.Contains(number)) result.Remove(number);          
+            }
+            foreach (var number in numbersInColumn)
+            {
+                if (result.Contains(number)) result.Remove(number);
+            }
+            foreach (var number in GetNumbersInBlock(row,column))
+            {
+                if (result.Contains(number)) result.Remove(number);
+            }
+            return result.ToArray();
         }
         private bool IsComplete()
         {

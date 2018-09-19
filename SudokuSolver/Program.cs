@@ -13,8 +13,17 @@ namespace SudokuSolver
             Sudoku game = new Sudoku("003020600900305001001806400" +
                                      "008102900700000008006708200" +
                                      "002609500800203009005010300");
+            Console.WriteLine("Pussel att lösa:");
+            game.PrintBoard();
+
+            int[] possibleNumbers = game.FindPossibleNumbers(4,4);
+
+
             // game.Solve();
-            Console.WriteLine(game.ToString());
+
+            Console.WriteLine("Lösning:");
+            game.PrintBoard();
+            
         }
     }
 }
