@@ -15,8 +15,10 @@ namespace SudokuSolver
             {
                 for (int col = 0; col < 9; col++)
                 {
-                    int number = int.Parse(board[position].ToString());
-                    SetCellValue(row, col, number);
+                    if (int.TryParse(board.Substring(position,1), out int number))
+                    {
+                        SetCellValue(row, col, number);
+                    }
                     position++;
                 }
             }
